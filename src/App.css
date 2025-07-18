@@ -1,0 +1,104 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.bg-gradient-eth {
+  background: linear-gradient(135deg, #627eea, #3c3c3d);
+}
+
+.bg-gradient-poly {
+  background: linear-gradient(135deg, #8247e5, #2d2a4a);
+}
+
+.bg-gradient-arb {
+  background: linear-gradient(135deg, #28a0f0, #1a293a);
+}
+
+.bg-gradient-bsc {
+  background: linear-gradient(135deg, #f3ba2f, #202020);
+}
+
+.hover-zoom:hover {
+  transform: scale(1.02);
+  transition: transform 0.2s ease-in-out;
+}
+
+
+.gas-card {
+  background: #1e1e1e;
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  transition: transform 0.2s ease-in-out;
+}
+
+.gas-card:hover {
+  transform: scale(1.02);
+}
+
+/* Ethereum */
+.bg-eth {
+  border: 2px solid transparent;
+  background-image: linear-gradient(#1e1e1e, #1e1e1e), linear-gradient(135deg, #627eea, #a17fe0);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+}
+
+/* Polygon */
+.bg-polygon {
+  border: 2px solid transparent;
+  background-image: linear-gradient(#1e1e1e, #1e1e1e), linear-gradient(135deg, #8247e5, #c084fc);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+}
+
+/* Arbitrum */
+.bg-arbitrum {
+  border: 2px solid transparent;
+  background-image: linear-gradient(#1e1e1e, #1e1e1e), linear-gradient(135deg, #28a0f0, #a2d2ff);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+}
+
+/* BSC */
+.bg-bsc {
+  border: 2px solid transparent;
+  background-image: linear-gradient(#1e1e1e, #1e1e1e), linear-gradient(135deg, #f3ba2f, #ffeb3b);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+}
