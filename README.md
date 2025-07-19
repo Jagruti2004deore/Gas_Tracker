@@ -13,30 +13,6 @@ A real-time dashboard to track gas prices across **Ethereum**, **Polygon**, and 
 ✅ Switch between **Live Mode** and **Simulation Mode**  
 ✅ Built with **React**, **Zustand**, **Ethers.js**, and **Lightweight-Charts**
 
----
-
-## 🧠 Architecture Overview
-
-```mermaid
-graph LR
-  A[User] --> B[React Frontend]
-  B --> C[Zustand Store]
-  C --> D{Mode}
-  D -->|Live| E[WebSocket Providers]
-  D -->|Simulate| F[Transaction Calculator]
-  E --> G[Ethereum RPC]
-  E --> H[Polygon RPC]
-  E --> I[BNB Chain RPC]
-  F --> J[Uniswap V3 ETH/USDC Pool]
-  J --> K[Parse Swap Events]
-  K --> L[Calculate ETH/USD]
-  L --> M[Gas Cost USD]
-  G --> N[Base/Priority Fees]
-  H --> N
-  I --> N
-  N --> O[Candlestick Chart]
-  O --> P[Lightweight Charts]
-  M --> P
 
 
 | Tool               | Description                       |
