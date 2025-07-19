@@ -1,70 +1,136 @@
-# Getting Started with Create React App
+# ⚡ Real-Time Cross-Chain Gas Price Tracker with Wallet Simulation
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A real-time dashboard to track gas prices across **Ethereum**, **Polygon**, and **BNB Chain**, simulate transaction costs in USD, and visualize gas price volatility through candlestick charts — all using native WebSocket RPCs and on-chain Uniswap V3 data.
+---
 
-## Available Scripts
+## 📌 Features
 
-In the project directory, you can run:
+✅ Real-time gas prices via native **WebSocket RPCs**  
+✅ **Candlestick chart** of gas price volatility (15-minute intervals)  
+✅ Simulate **ETH/MATIC/BNB** transaction cost in **USD**  
+✅ Accurate USD prices from **Uniswap V3 ETH/USDC pool** using logs  
+✅ Dynamic alerts when gas prices fall below set thresholds  
+✅ Switch between **Live Mode** and **Simulation Mode**  
+✅ Built with **React**, **Zustand**, **Ethers.js**, and **Lightweight-Charts**
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🧠 Architecture Overview
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```mermaid
+graph LR
+  A[User] --> B[React Frontend]
+  B --> C[Zustand Store]
+  C --> D{Mode}
+  D -->|Live| E[WebSocket Providers]
+  D -->|Simulate| F[Transaction Calculator]
+  E --> G[Ethereum RPC]
+  E --> H[Polygon RPC]
+  E --> I[BNB Chain RPC]
+  F --> J[Uniswap V3 ETH/USDC Pool]
+  J --> K[Parse Swap Events]
+  K --> L[Calculate ETH/USD]
+  L --> M[Gas Cost USD]
+  G --> N[Base/Priority Fees]
+  H --> N
+  I --> N
+  N --> O[Candlestick Chart]
+  O --> P[Lightweight Charts]
+  M --> P
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| Tool               | Description                       |
+| ------------------ | --------------------------------- |
+| React.js           | Frontend framework                |
+| Zustand            | Global state management           |
+| Ethers.js          | Web3 interactions & decoding logs |
+| Bootstrap 5        | UI styling                        |
+| Lightweight-Charts | Candlestick chart visualization   |
+| WebSocketProvider  | Live gas price updates            |
+| Uniswap V3 Logs    | Real ETH/USD pricing from swaps   |
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1️⃣ Install Dependencies
+npm install
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2️⃣ Add Environment Variables
+Create a .env file:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3️⃣ Add the following:
+REACT_APP_ETH_RPC_WSS=wss://mainnet.infura.io/ws/v3/YOUR_KEY
+REACT_APP_POLYGON_RPC_WSS=wss://polygon-rpc.com
+REACT_APP_BSC_RPC_WSS=wss://bsc-ws-node.nariox.org:443
 
-### `npm run eject`
+4️⃣ Start the App
+npm start
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+📉 Candlestick Chart (15-Minute Interval)
+Aggregates baseFeePerGas every 15 minutes
+Captures open, high, low, and close
+Real-time updates using Zustand and WebSocket
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Gas Simulation Example
+When user inputs 0.5 ETH and network fees are:
+baseFee = 30 gwei
+priorityFee = 2 gwei
+usdPrice = 3200
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+💡 Calculation:
+costUSD = (30 + 2) * 21000 * 3200 / 1e9 ≈ $2.13
+Uses Uniswap V3 pool 0x88e6A0c2dDD26FEEb64F039a2c41296FcB3f5640
+Decodes sqrtPriceX96 to derive ETH/USD
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+📢 Gas Price Alerts
+Get notified when:
+Ethereum gas < 20 Gwei
+Polygon gas < 50 Gwei
+BNB Chain gas < 5 Gwei
 
-## Learn More
+Alerts appear every 60s using react-toastify.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+🧩 Zustand State Management
+{
+  mode: 'live' | 'simulation',
+  chains: {
+    ethereum: { baseFee, priorityFee, history: GasPoint[] },
+    polygon: { ... },
+    bsc: { ... }
+  },
+  usdPrice: number
+}
+Mode toggle ensures shared state across widgets and charts.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+📂 Folder Structure
+src/
+├── components/
+│   ├── Chart.jsx
+│   ├── GasWidget.jsx
+│   ├── GasSimulator.jsx
+│   └── AlertHandler.jsx
+│   └── ModeToggle.jsx
+│    └── GasAlerts.jsx
+│    └── PriceDisplay.jsx
+├── hooks/
+│   ├── useGasFeed.js
+│   ├── useETHPrice.js
+│   └── useCandlestick.js
+├── store/
+│   └── gasStore.js
+├── utils/
+│   └── format.js
+├── App.js
+└── index.js
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
+🧪 Demo Walkthrough
+Shows live gas prices updating via WebSockets
+User enters simulated transaction value
+Calculates gas cost in USD across all 3 chains
+Gas alert shown when threshold is hit
+Candlestick chart updates every 15 minutes
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+🤝 Contributing
+PRs are welcome! For major changes, open an issue first to discuss.
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
